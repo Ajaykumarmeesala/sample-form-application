@@ -1,23 +1,50 @@
-name: Upload Website
+name: Deploy to AWS
 
 on:
   push:
     branches:
-    - main
+      - main
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v1
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-    - name: Configure AWS Credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ap-southeast-1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1   # Replace with your AWS region
 
-    - name: Deploy static site to S3 bucket
-      run: aws s3 sync sample/sample-form-application/ s3://static-content-ajay --delete
+      - name: Verify AWS CLI installation
+        run: aws --version
+
+      - name: Validate AWS CLI configuration
+        run: |
+          echo "Validating AWS CLI configuration..."
+          aws sts get-caller-identity
+
+      - name: Check source directory existence
+        run: |
+          if [ ! -d "sample/sample-form-application" ]; then
+            echo "Source directory does not exist"
+            exit 1
+          else
+            echo "Source directory exists"
+          fi
+
+      - name: Verify S3 bucket existence
+        run: |
+          echo "Checking S3 bucket existence..."
+          if aws s3 ls "s3://static-content-ajay" 2>&1 | grep -q 'NoSuchBucket'; then
+            echo "S3 bucket does not exist"
+            exit 1
+          else
+            echo "S3 bucket exists"
+          fi
+
+      - name: Deploy to S3
+        run: aws s3 sync sample/sample-form-application/ s3://static-content-ajay --delete
