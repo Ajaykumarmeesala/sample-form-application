@@ -41,6 +41,6 @@ jobs:
           aws lambda create-function \
             --function-name SubmitFormFunction \
             --runtime nodejs14.x \
-            --role arn:aws:iam::891377087400:role/service-role/lambdafunction-role-vxa3dfwl:role/lambdafunction-rolevxa3dfwl \
+            --role arn:aws:iam::891377087400:role/lambdarole \
             --handler submitFormLambda.handler \
             --zip-file fileb://submitFormLambda.zip
