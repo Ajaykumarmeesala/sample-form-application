@@ -1,4 +1,4 @@
-name: Deploy to AWebS
+name: Deploy to AWS
 
 on:
   push:
