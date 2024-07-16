@@ -22,19 +22,17 @@ jobs:
       - name: Verify AWS CLI installation
         run: aws --version
 
-      - name: Validate AWS CLI configuration
+      - name: Show current working directory and list repository contents
         run: |
-          echo "Validating AWS CLI configuration..."
-          aws sts get-caller-identity
-
-      - name: Show current working directory
-        run: pwd
-
-      - name: List repository contents
-        run: ls -al
-
-      - name: List S3 bucket contents
-        run: aws s3 ls s3://static-content-ajay --recursive
+          pwd
+          ls -al
+      
+      - name: List S3 Buckets and Bucket Contents
+        run: |
+          echo "Listing S3 buckets..."
+          aws s3 ls
+          echo "Listing contents of S3 bucket static-content-ajay..."
+          aws s3 ls s3://static-content-ajay --recursive
 
       - name: Deploy index.html to S3
-        run: aws s3 cp index.html s3://static-content-ajay/index.html --acl public-read
+        run: aws s3 cp index.html s3://static-content-ajay/index.html
