@@ -33,16 +33,13 @@ jobs:
       - name: List repository contents
         run: ls -al
 
-      - name: List contents of sample directory
-        run: ls -al sample
-
-      - name: Check source directory existence
+      - name: Check for index.html file
         run: |
-          if [ ! -d "sample/sample-form-application" ]; then
-            echo "Source directory does not exist"
+          if [ ! -f "index.html" ]; then
+            echo "index.html file does not exist in the root directory"
             exit 1
           else
-            echo "Source directory exists"
+            echo "index.html file exists"
           fi
 
       - name: Verify S3 bucket existence
@@ -55,5 +52,5 @@ jobs:
             echo "S3 bucket exists"
           fi
 
-      - name: Deploy to S3
-        run: aws s3 sync sample/sample-form-application/ s3://static-content-ajay --delete
+      - name: Deploy index.html to S3
+        run: aws s3 cp index.html s3://static-content-ajay/index.html --acl public-read
