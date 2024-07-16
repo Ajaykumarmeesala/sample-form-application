@@ -27,6 +27,15 @@ jobs:
           echo "Validating AWS CLI configuration..."
           aws sts get-caller-identity
 
+      - name: Show current working directory
+        run: pwd
+
+      - name: List repository contents
+        run: ls -al
+
+      - name: List contents of sample directory
+        run: ls -al sample
+
       - name: Check source directory existence
         run: |
           if [ ! -d "sample/sample-form-application" ]; then
