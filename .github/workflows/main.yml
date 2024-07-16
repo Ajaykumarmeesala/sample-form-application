@@ -40,7 +40,7 @@ jobs:
         run: |
           aws lambda create-function \
             --function-name SubmitFormFunction \
-            --runtime nodejs14.x \
+            --runtime nodejs20x.x \
             --role arn:aws:iam::891377087400:role/lambdarole \
             --handler submitFormLambda.handler \
             --zip-file fileb://submitFormLambda.zip
