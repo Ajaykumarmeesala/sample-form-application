@@ -33,24 +33,8 @@ jobs:
       - name: List repository contents
         run: ls -al
 
-      - name: Check for index.html file
-        run: |
-          if [ ! -f "index.html" ]; then
-            echo "index.html file does not exist in the root directory"
-            exit 1
-          else
-            echo "index.html file exists"
-          fi
-
-      - name: Verify S3 bucket existence
-        run: |
-          echo "Checking S3 bucket existence..."
-          if aws s3 ls "s3://static-content-ajay" 2>&1 | grep -q 'NoSuchBucket'; then
-            echo "S3 bucket does not exist"
-            exit 1
-          else
-            echo "S3 bucket exists"
-          fi
+      - name: List S3 bucket contents
+        run: aws s3 ls s3://static-content-ajay --recursive
 
       - name: Deploy index.html to S3
         run: aws s3 cp index.html s3://static-content-ajay/index.html --acl public-read
