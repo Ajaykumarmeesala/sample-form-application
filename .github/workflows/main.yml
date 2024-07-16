@@ -36,3 +36,11 @@ jobs:
 
       - name: Deploy index.html to S3
         run: aws s3 cp index.html s3://static-content-ajay/index.html
+      - name: Deploy Lambda function
+        run: |
+          aws lambda create-function \
+            --function-name SubmitFormFunction \
+            --runtime nodejs14.x \
+            --role arn:aws:iam::891377087400:role/service-role/lambdafunction-role-vxa3dfwl:role/lambdafunction-rolevxa3dfwl \
+            --handler submitFormLambda.handler \
+            --zip-file fileb://submitFormLambda.zip
